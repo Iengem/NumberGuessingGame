@@ -1,33 +1,32 @@
-package numberGuessingGame;
+package numberguessinggame.game;
 
+import numberguessinggame.utils.Timer;
 import java.util.Random;
 import java.util.Scanner;
 
-public class Game {
+public class GuessingGame {
     private final int targetNumber;
     private final int maxAttempts;
-    private final long timeLimit;
+    private final Timer timer;
     private int attemptsLeft;
-    private long startTime;
 
-    public Game() {
+    public GuessingGame(int maxAttempts, Timer timer) {
         this.targetNumber = new Random().nextInt(9999) + 1;
-        this.maxAttempts = 3;
-        this.timeLimit = 30000; // 30 seconds
+        this.maxAttempts = maxAttempts;
+        this.timer = timer;
         this.attemptsLeft = maxAttempts;
     }
 
     public void start() {
         Scanner scanner = new Scanner(System.in);
         System.out.println("Guess the number between 1 and 9999. You have " + maxAttempts + " attempts and 30 seconds.");
-        this.startTime = System.currentTimeMillis();
+        timer.start();
 
         while (attemptsLeft > 0) {
-            long elapsedTime = System.currentTimeMillis() - startTime;
-            if (elapsedTime > timeLimit) {
+            if (timer.isTimeUp()) {
                 System.out.println("Time's up! You lose a chance.");
                 attemptsLeft--;
-                startTime = System.currentTimeMillis(); // Reset the timer
+                timer.start();
                 continue;
             }
 
